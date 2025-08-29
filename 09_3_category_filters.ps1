@@ -2,25 +2,24 @@
 # MS Edge, and Mozilla Firefox using local GPO settings
 # Use a single parameter, the DoH URL
 
-### Set up logging
+######################## Set up logging ###############################
 $logfile = "$log_path\$logname"
 #Clear-Content $logfile  #<---- Uncomment to clear file every time, comment to concatenate
 $DATE = Get-Date -UFormat "%Y-%m-%d %H:%M:%S"
-Write-Output ("=" * 80)  | Tee-Object $logfile -Append
-Write-Output "==> $PSCommandPath" | Tee-Object $logfile -Append
-Write-Output "==> $DATE" | Tee-Object $logfile -Append
 if (!(Test-Path $logfile)) {
     New-Item -ItemType File -Path $log_path -Name ($logname) | Out-Null
 }
-
-### Load config file
-Try {
+Try {                                             ### Load config file
     . $PSScriptRoot\settings.ps1
 }
 Catch {
     Write-Output "==> Error! Missing settings.ps1 or invalid syntax" | Tee-Object $logfile -Append
     Exit
 }
+Write-Output ("=" * 80)  | Tee-Object $logfile -Append
+Write-Output "==> $PSCommandPath" | Tee-Object $logfile -Append
+Write-Output "==> $DATE" | Tee-Object $logfile -Append
+######################################################################
 
 $edge_path = "HKLM:\SOFTWARE\Policies\Microsoft\Edge\"
 $chrome_path = "HKLM:\SOFTWARE\Policies\Google\Chrome\"
