@@ -1,8 +1,9 @@
 # ps_scripts
 Powershell Scripts for various system administration tasks
 
-## To set the execution policy, first open up powershell as Administrator and run:
+## Start PS as administrator and set the session execution policy:
 `Set-ExecutionPolicy Bypass`
+
 This will disable blocking execution of scripts without warnings of promps. Applies only to the current PS session.
 
 
