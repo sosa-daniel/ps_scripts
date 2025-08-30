@@ -1,6 +1,4 @@
 # Download scripts from github into the CWD
-#
-
 
 $url_base = "https://raw.githubusercontent.com/sosa-daniel/ps_scripts/master/"
 $files = @("09_2_dns_filtering.ps1", "09_3_category_filters.ps1", "10_3_disable_autorun.ps1", "settings.ps1")
