@@ -1,5 +1,5 @@
 # ps_scripts
-Powershell Scripts for various system administration taks
+Powershell Scripts for various system administration tasks
 
 ## To set the execution policy, first open up powershell as Administrator and run:
 `Set-ExecutionPolicy Bypass`
