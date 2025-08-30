@@ -1,6 +1,5 @@
 # This script creates registry keys to manage DNS over HTTPS (DoH) settings on Google Chrome,
 # MS Edge, and Mozilla Firefox using local GPO settings
-# Use a single parameter, the DoH URL
 
 ######################## Set up logging ###############################
 $logfile = "$log_path\$logname"
