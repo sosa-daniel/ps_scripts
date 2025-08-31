@@ -2,6 +2,10 @@
 
 $log_path = "$env:TEMP"
 $logname = "endpoint_hardening.log"
+
+# 03_6_encrypt_drive.ps1
+$system_drive = "C:\" 
+
 # 09_2_dns_filtering.ps1:
 # Uncomment one of the following
  $dns_servers = @("9.9.9.9", "149.112.112.112", "2620:fe::fe", "2620:fe::9") #Quad9 Servers
@@ -28,4 +32,10 @@ $logname = "endpoint_hardening.log"
 
 # 10_3_disable_autorun.ps1
 # N/A: No custom configuration is necessary to disable autorun/autoplay.
+
+# system_restore_point.ps1
+# change the drive letter, description, and restore point type
+# "$system_drive" setting was configured above in 03_6_encrypt_drive.ps1
+$sr_description = "Restore Point prior to device configuration changes"
+$sr_type = "MODIFY_SETTINGS"
 

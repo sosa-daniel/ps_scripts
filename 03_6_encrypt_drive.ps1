@@ -1,4 +1,4 @@
-# This scripts sets the registry keys to disable autorun and autoplay for removable media
+# This scripts enables BitLocker Encryption for the sytem drive $
 # CIS Controls v8.1 - Safeguard 10.3
 
 
@@ -21,10 +21,17 @@ Write-Output "==> $PSCommandPath" | Tee-Object $logfile -Append
 Write-Output "==> $DATE" | Tee-Object $logfile -Append
 ######################################################################
 
-$autorun_path  = "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer"
-$autoplay_path = "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers"
+# Get BitLocker status
+$bitlocker = Get-BitLockerVolume -MountPoint $system_drive
 
-New-ItemProperty -Path $autorun_path  -Name "NoDriveAutoRun" -Value 0xFF -PropertyType DWord -Force
-New-ItemProperty -Path $autoplay_path -Name "DisableAutoplay" -Value 1 -PropertyType DWord -Force
+if ($bitlocker.ProtectionStatus -eq 0) {
+    Write-Output "Drive $system_drive is not encrypted. Starting BitLocker encryption using TPM." | Tee-Object $logfile -Append
 
-Write-Output "==> Autorun & Autoplay Disabled." | Tee-Object $logfile -Append
+    # Enable BitLocker as a background job. (Will continue if shell window is terminated.
+    Start-Job -Name bitlocker_job -ScriptBlock {
+        Enable-BitLocker -MountPoint $system_drive -TpmProtector -EncryptionMethod XtsAes256 -UsedSpaceOnly 
+    }
+    Write-Output "Encryption Job for drive $system_drive started with job name 'bitlocker_job' " | Tee-Object $logfile -Append
+} else {
+    Write-Output "Drive $system_drive is already encrypted using BitLocker." | Tee-Object $logfile -Append
+}

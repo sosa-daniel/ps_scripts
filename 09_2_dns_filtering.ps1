@@ -2,18 +2,18 @@
 # CIS Controls v8.1 - Safeguard 9.2
 
 ######################## Set up logging ###############################
-$logfile = "$log_path\$logname"
-#Clear-Content $logfile  #<---- Uncomment to clear file every time, comment to concatenate
-$DATE = Get-Date -UFormat "%Y-%m-%d %H:%M:%S"
-if (!(Test-Path $logfile)) {
-    New-Item -ItemType File -Path $log_path -Name ($logname) | Out-Null
-}
 Try {                                             ### Load config file
     . $PSScriptRoot\settings.ps1
 }
 Catch {
     Write-Output "==> Error! Missing settings.ps1 or invalid syntax" | Tee-Object $logfile -Append
     Exit
+}
+#Clear-Content $logfile  #<---- Uncomment to clear file every time, comment to concatenate
+$DATE = Get-Date -UFormat "%Y-%m-%d %H:%M:%S"
+$logfile = "$log_path\$logname"
+if (!(Test-Path $logfile)) {
+    New-Item -ItemType File -Path $log_path -Name ($logname) | Out-Null
 }
 Write-Output ("=" * 80)  | Tee-Object $logfile -Append
 Write-Output "==> $PSCommandPath" | Tee-Object $logfile -Append
