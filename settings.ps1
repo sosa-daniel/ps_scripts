@@ -38,6 +38,16 @@ $scr_timeout = "600" # Timeout in seconds. e.g. 300 = 5m; 600 = 10m; 900 = 15m
 # 10_3_disable_autorun.ps1
 # N/A: No custom configuration is necessary to disable autorun/autoplay.
 
+# logon_banner.ps1
+$org_name = "Organization Name Here"
+$banner_title = "By clicking OK below you acknowledge and consent to the following:"
+$banner_text  = @"
+All activities on this computer will be monitored.
+You consent to the unrestricted monitoring, interception, recording, and searching of all communications and data on this computer system at any time and for any purpose by $org_name and by any person or entity authorized by $org_name.
+You are acknowledging that you have no reasonable expectation of privacy regarding your use of this computer system.
+These acknowledgements and consents cover all use of the system, including work-related and personal use without exception.
+"@
+
 # system_restore_point.ps1
 # change the drive letter, description, and restore point type
 # "$system_drive" setting was configured above in 03_6_encrypt_drive.ps1
