@@ -13,9 +13,10 @@ Do NOT run any commands/scripts from the internet unless you've read the source 
 
 This will permit the execution of scripts without any warnings or prompts. Applies only to the current PS session.
 
-## CIS Control 5: Account Management -> Safeguard 5.4: Restrict Administrator Privileges
-Configure this control manually to avoid possible Admin lockout issues
-first do a system restore: `system_restore_point.ps1`
+## CIS Controls 5.4: Restrict Administrator Privileges
+Configure this control manually to avoid possible Admin lockout issues.
+
+Create a system restore point prior to configuration changes to allow for rollback: `system_restore_point.ps1`
 
 ```
 # View local user accounts:
