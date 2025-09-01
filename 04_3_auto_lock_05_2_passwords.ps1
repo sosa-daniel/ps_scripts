@@ -53,3 +53,13 @@ foreach ($profile in $user_profiles) {
     }
 }
 
+# Set local password policy:
+# if (Get-InstalledModule -Name LGPO) {
+#     Write-Output "LGPO module is installed" | Tee-Object $logfile -Append
+# } else {
+#     Write-Output "LGPO module is NOT installed. Installing..." | Tee-Object $logfile -Append
+#     Install-Module -Name LGPO -Repository PSGallery
+#     #TODO still need to download and install LGPO files
+#     Import-Module LGPO
+# }
+# TODO: use LGPO to set local policy
