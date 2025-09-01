@@ -29,7 +29,7 @@ Get-LocalGroupMember -Group Administrators
 
 # Create a new local user (replace values as needed)
 $user = "MyNewAdminUserAccount"
-$psw = Read-Host "password" -AsSecureString
+$psw = Read-Host password -AsSecureString
 New-LocalUser -Name $user -Password $psw
 
 # Add the new user to Administrators group
@@ -41,7 +41,7 @@ Add-LocalGroupMember -Group Administrators -Member $user
 Remove-LocalGroupMember -Group Administrators -Member old_user
 
 # If there are unused local users, remove them: (also delete home directory and user profile)
-Remove-LocalGroupMember -Group Administrators -Member UserToDelete
+Remove-LocalUser -Name UserToDelete
 rm -r -Force C:\Users\UserToDelete
 Get-CimInstance -ClassName Win32_UserProfile | Where-Object {$_.LocalPath -like "C:\Users\UserToDelete"} | Remove-CimInstance -Confirm:$true
 ```

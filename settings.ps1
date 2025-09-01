@@ -10,6 +10,8 @@ $system_drive = "C:\"
 # 04_3_auto_lock_05_2_passwords.ps1
 $scr_path = "C:\windows\system32\scrnsave.scr"
 $scr_timeout = "600" # Timeout in seconds. e.g. 300 = 5m; 600 = 10m; 900 = 15m
+$max_pass_age = 180
+$min_pass_len = 12
 
 # 09_2_dns_filtering.ps1:
 # Uncomment one of the following

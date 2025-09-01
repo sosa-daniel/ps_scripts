@@ -21,6 +21,12 @@ Write-Output "==> $PSCommandPath" | Tee-Object $logfile -Append
 Write-Output "==> $DATE" | Tee-Object $logfile -Append
 ######################################################################
 
+# Check if domain joined
+if ((Get-CimInstance Win32_ComputerSystem).PartOfDomain) {
+    Write-Output "This system is domain-joined. Set policy through AD controller" | Tee-Object $logfile -Append
+    Exit
+}
+
 # Require password at logon (disable autologon)
 $winlogon = Test-Path -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Winlogon'
 if ($winlogon) {
@@ -29,6 +35,7 @@ if ($winlogon) {
 } else {
     Write-Output "Auto Logon is not enabled." | Tee-Object $logfile -Append
 }
+
 
 # Configure screensaver settings for every user profile
 $user_profiles = Get-CimInstance Win32_UserProfile | Where-Object { $_.LocalPath -ne $null }
@@ -52,14 +59,19 @@ foreach ($profile in $user_profiles) {
         Set-ItemProperty -Path $scr_key_path -Name "ScreenSaverIsSecure" -Value 1 -Force
     }
 }
+# set the InactivityTimeoutSecs system property to match ScreenSaveTimout value
+$sys_reg_path = "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System"
+Set-ItemProperty -Path $sys_reg_path -Name "InactivityTimeoutSecs" -Value $scr_timeout -Force
+
+# set current power scheme inactivity timer while plugged in and on battery
+powercfg /CHANGE monitor-timeout-ac $scr_timeout
+powercfg /CHANGE monitor-timeout-dc $scr_timeout
 
 # Set local password policy:
-# if (Get-InstalledModule -Name LGPO) {
-#     Write-Output "LGPO module is installed" | Tee-Object $logfile -Append
-# } else {
-#     Write-Output "LGPO module is NOT installed. Installing..." | Tee-Object $logfile -Append
-#     Install-Module -Name LGPO -Repository PSGallery
-#     #TODO still need to download and install LGPO files
-#     Import-Module LGPO
-# }
-# TODO: use LGPO to set local policy
+$current_policy = NET ACCOUNTS
+Write-Output "Previous local password policy:" | Tee-Object $logfile -Append
+Write-Output "$current_policy" | Tee-Object $logfile -Append
+
+NET ACCOUNTS /MINPWLEN:$min_pass_len /MAXPWAGE:$max_pass_age /UNIQUEPW:24
+Write-Output "Passwords must be at least $min_pass_len characters and will must change every $max_pass_age days." | Tee-Object $logfile -Append
+Write-Output "NOTE: Local password policy (non-domain) in Windows is not very transparent. Consider using Active Directory instead. " | Tee-Object $logfile -Append
