@@ -7,7 +7,7 @@ Try {                                             ### Load config file
     . $PSScriptRoot\settings.ps1
 }
 Catch {
-    Write-Output "==> Error! Missing settings.ps1 or invalid syntax" | Tee-Object $logfile -Append
+    Write-Output "==> Error! Missing settings.ps1 or invalid syntax"
     Exit
 }
 #Clear-Content $logfile  #<---- Uncomment to clear file every time, comment to concatenate
@@ -20,6 +20,13 @@ Write-Output ("=" * 80)  | Tee-Object $logfile -Append
 Write-Output "==> $PSCommandPath" | Tee-Object $logfile -Append
 Write-Output "==> $DATE" | Tee-Object $logfile -Append
 ######################################################################
+
+# Check if BitLocker is supported by this windows version
+$win = (Get-CimInstance Win32_OperatingSystem).Caption
+if ($win.ToLower().Contains("home")) {
+    Write-Output "!!! BitLocker is not supported in $win. Exiting." | Tee-Object $logfile -Append
+    Exit
+}
 
 # Get BitLocker status
 $bitlocker = Get-BitLockerVolume -MountPoint $system_drive

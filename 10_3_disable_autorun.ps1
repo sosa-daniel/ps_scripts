@@ -7,7 +7,7 @@ Try {                                             ### Load config file
     . $PSScriptRoot\settings.ps1
 }
 Catch {
-    Write-Output "==> Error! Missing settings.ps1 or invalid syntax" | Tee-Object $logfile -Append
+    Write-Output "==> Error! Missing settings.ps1 or invalid syntax"
     Exit
 }
 #Clear-Content $logfile  #<---- Uncomment to clear file every time, comment to concatenate

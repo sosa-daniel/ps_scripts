@@ -6,6 +6,11 @@ $logname = "endpoint_hardening.log"
 # 03_6_encrypt_drive.ps1
 $system_drive = "C:\" 
 
+
+# 04_3_auto_lock_05_2_passwords.ps1
+$scr_path = "C:\windows\system32\scrnsave.scr"
+$scr_timeout = "600" # Timeout in seconds. e.g. 300 = 5m; 600 = 10m; 900 = 15m
+
 # 09_2_dns_filtering.ps1:
 # Uncomment one of the following
  $dns_servers = @("9.9.9.9", "149.112.112.112", "2620:fe::fe", "2620:fe::9") #Quad9 Servers
