@@ -33,6 +33,8 @@ New-LocalUser -Name $user -Password $psw
 # Add the new user to Administrators group
 Add-LocalGroupMember -Group Administrators -Member $user
 
+# At this stage you should make sure the new admin credentials are working.
+
 # Remove old_user account from the local Administrators group
 Remove-LocalGroupMember -Group Administrators -Member old_user
 
