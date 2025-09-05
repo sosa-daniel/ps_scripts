@@ -13,6 +13,7 @@ $scr_timeout = "600" # Timeout in seconds. e.g. 300 = 5m; 600 = 10m; 900 = 15m
 $max_pass_age = 180
 $min_pass_len = 12
 
+
 # 09_2_dns_filtering.ps1:
 # Uncomment one of the following
  $dns_servers = @("9.9.9.9", "149.112.112.112", "2620:fe::fe", "2620:fe::9") #Quad9 Servers
@@ -25,7 +26,12 @@ $min_pass_len = 12
 # $dns_servers = @("76.76.2.4", "76.76.10.4", "2606:1a40::4", "2606:1a40:1::4") # Control D: Malware + Ads & Tracking + Adult Content & Drugs
 # $dns_servers = @("76.76.2.3", "76.76.10.3", "2606:1a40::3", "2606:1a40:1::3") # Control D: Malware + Ads & Tracking + Social Networks
 
-# 09_3_category_filters.ps1
+# browser_policy.ps1
+$extension_blocklist = @("*")
+# if a list of allowed or forced extensions, create a list of strings
+$extension_allowlist = @("")
+$extension_forcelist = @("")
+
 # Uncomment one of the following
 # $doh_address = "https://YOUR_ENDPOINT.cloudflare-gateway.com/dns-query" # Personalized blocking: cf zero trust
  $doh_address = "https://security.cloudflare-dns.com/dns-query" # Cloudflare Malware
