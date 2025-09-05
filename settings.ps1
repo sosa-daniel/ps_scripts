@@ -29,7 +29,7 @@ $min_pass_len = 12
 # browser_policy.ps1
 $extension_blocklist = @("*")
 # if a list of allowed or forced extensions, create a list of strings
-$extension_allowlist = @("")
+$extension_allowlist = @("nngceckbapebfimnlniiiahkandclblb", "jbkfoedolllekgbhcbcoahefnbanhhlh")
 $extension_forcelist = @("")
 
 # Uncomment one of the following

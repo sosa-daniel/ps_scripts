@@ -20,8 +20,8 @@ Write-Output "==> $PSCommandPath" | Tee-Object $logfile -Append
 Write-Output "==> $DATE" | Tee-Object $logfile -Append
 ######################################################################
 
-$edge_path = "HKLM:\SOFTWARE\Policies\Microsoft\Edge\"
-$chrome_path = "HKLM:\SOFTWARE\Policies\Google\Chrome\"
+$edge_path = "HKLM:\SOFTWARE\Policies\Microsoft\Edge"
+$chrome_path = "HKLM:\SOFTWARE\Policies\Google\Chrome"
 $firefox_path = "HKLM:\SOFTWARE\Policies\Mozilla\Firefox\DNSOverHTTPS"
 $path_list =  @($edge_path, $chrome_path)
 
@@ -55,11 +55,39 @@ foreach ($key_path in $path_list) {
     } else {
     New-ItemProperty -Path $key_path -Name "IncognitoModeAvailability" -Value 1 -PropertyType DWord -Force
     }
-    # Manage Extensions (uncomment allowlist/forcelist if needed)
+
+    #### Manage Extensions (uncomment allowlist/forcelist if needed)
     New-ItemProperty -Path $key_path -Name "BlockExternalExtensions" -Value 1 -PropertyType DWord -Force
-    New-ItemProperty -Path $key_path -Name "ExtensionInstallBlocklist" -Value $extension_blocklist -PropertyType MultiString -Force
-    #New-ItemProperty -Path $key_path -Name "ExtensionInstallAllowlist" -Value $extension_allowlist -PropertyType MultiString -Force
-    #New-ItemProperty -Path $key_path -Name "ExtensionInstallForcelist" -Value $extension_forcelist -PropertyType MultiString -Force
+    # Whitelist some extensions
+    $allow_ext_path = "$key_path\ExtensionInstallAllowlist"
+	if (-not (Test-Path -Path $allow_ext_path -PathType Container)) {
+        Write-Output "key '$allow_ext_path' does not exist. Creating" | Tee-Object $logfile -Append
+	} else {
+        Write-Output "key $allow_ext_path already exists." | Tee-Object $logfile -Append
+        Remove-Item -Path $allow_ext_path -Force
+	}
+    New-Item -Path $allow_ext_path -Force
+    $i = 1
+    foreach ($ext in $extension_allowlist) {
+        New-ItemProperty -Path $allow_ext_path -Name $i -Value $ext -PropertyType String -Force
+        $i++
+    }
+
+    # Block the rest of extensions
+    $block_ext_path = "$key_path\ExtensionInstallBlocklist"
+	if (-not (Test-Path -Path $block_ext_path -PathType Container)) {
+        Write-Output "key $block_ext_path does not exist. Creating" | Tee-Object $logfile -Append
+	} else {
+        Write-Output "key '$block_ext_path' already exists." | Tee-Object $logfile -Append
+        Remove-Item -Path $block_ext_path -Force
+	}
+    New-Item -Path $block_ext_path -Force
+    $i = 1
+    foreach ($ext in $extension_blocklist) {
+        New-ItemProperty -Path $block_ext_path -Name $i -Value $ext -PropertyType String -Force
+        $i++
+    }
+    #New-ItemProperty -Path $ext_key_path -Name "ExtensionInstallForcelist" -Value $extension_forcelist -PropertyType MultiString -Force
 }
 
 # Handle Firefox Separately
