@@ -18,6 +18,9 @@ Write-Output ("=" * 80)  | Tee-Object $logfile -Append
 Write-Output "==> $PSCommandPath" | Tee-Object $logfile -Append
 Write-Output "==> $DATE" | Tee-Object $logfile -Append
 ######################################################################
+reg export HKLM $log_path\hklm_backup.reg /y 
+reg export HKCU $log_path\hkcu_backup.reg /y 
+Write-Output "backed up registry hives to $log_path. To restore use 'reg import $log_path\hklm_backup.reg' (or hkcu_backup.reg)" | Tee-Object $logfile -Append
 
 Try {                                             ### Load config file
     Install-PackageProvider NuGet -Force
